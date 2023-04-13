@@ -18,6 +18,7 @@ function App() {
           Learn React
         </a>
         <p>my first create</p>
+        <p>This repositories all settings</p>
       </header>
     </div>
   );
