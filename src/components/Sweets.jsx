@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getStateUser } from "../redux/selectors";
 import { fetchUser } from "../redux/operation";
 import { useEffect } from "react";
+import { NavLink } from "react-router-dom";
 
 const Tweets = () => {
   const arrContacts = useSelector(getStateUser);
@@ -13,6 +14,7 @@ const Tweets = () => {
   }, [dispatch]);
   return (
     <>
+      <NavLink to="/">Back</NavLink>
       <ul>
         {arrContacts?.map(({ id, avatar, tweets, followers, user }) => (
           <li key={id} className="css.item">

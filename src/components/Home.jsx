@@ -1,7 +1,11 @@
+import { NavLink } from "react-router-dom";
+
 const Home = () => {
   return (
     <>
-      <h1>Home page</h1>
+      <div className="appDiv">
+        <NavLink to="/tweets">tweets</NavLink>
+      </div>
     </>
   );
 };
