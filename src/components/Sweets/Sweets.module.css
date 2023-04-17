@@ -73,9 +73,44 @@
 }
 .item_img {
   position: absolute;
-  top: 196px;
-  left: 160px;
+  top: 198px;
+  left: 162px;
   border-radius: 50%;
   width: 56px;
-  overflow: clip;
+  border: none;
+}
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  width: 100%;
+}
+
+.pagination__link {
+  margin: 0 10px;
+  color: #1da1f2;
+  text-decoration: none;
+  cursor: pointer;
+  padding: 0 0.5rem;
+}
+
+.pagination__link__disabled {
+  color: #aaa;
+  cursor: default;
+  display: none;
+}
+
+.pagination__link__active {
+  color: white;
+  background-color: #1da1f2;
+  border-radius: 5px;
+  padding: 5px 10px;
+}
+.pagination__number {
+  margin: 0 0.5rem;
+}
+.pagination__page {
+  margin-right: 8px;
+  cursor: pointer;
 }
