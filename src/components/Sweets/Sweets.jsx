@@ -9,7 +9,7 @@ import ReactPaginate from "react-paginate";
 const Tweets = () => {
   const arrContacts = useSelector(getStateUser);
   const dispatch = useDispatch();
-  const [isFollow, setFollowings] = useState(false);
+  const [followCounts, setFollowCounts] = useState({});
   const [pageNumber, setPageNumber] = useState(0);
 
   useEffect(() => {
@@ -20,28 +20,40 @@ const Tweets = () => {
   const pagesVisited = pageNumber * contactsPerPage;
 
   const followCount = (idUser) => {
-    const filterUser = arrContacts.filter(({ id }) => id === idUser);
-    filterUser.map(({ followers }) => followers + 1);
-    console.log("filterUser:", filterUser);
-
-    setFollowings(!isFollow);
+    const newFollowCounts = { ...followCounts };
+    const followCountForUser = newFollowCounts[idUser] || 0;
+    const isFollowing = followCountForUser % 2 === 1;
+    newFollowCounts[idUser] = isFollowing
+      ? followCountForUser - 1
+      : followCountForUser + 1;
+    setFollowCounts(newFollowCounts);
   };
 
   const displayContacts = arrContacts
     .slice(pagesVisited, pagesVisited + contactsPerPage)
-    .map(({ id, avatar, tweets, followers, user }) => (
-      <li key={id} className={css.item}>
-        <img src={avatar} alt="user" className={css.item_img} />
-        <p className={css.item_name}>{user}</p>
-        <span className={css.item_tweets}>{tweets} TWEETS </span>
-        <span className={css.item_followers}>
-          {followers.toLocaleString("en-US")} FOLLOWERS
-        </span>
-        <button className={css.btn_item} onClick={() => followCount(id)}>
-          {isFollow ? "Following" : "Follow"}
-        </button>
-      </li>
-    ));
+    .map(({ id, avatar, tweets, followers, user }) => {
+      const followCountForUser = followCounts[id] || 0;
+      const isFollowing = followCountForUser % 2 === 1;
+      const followerss = followers + followCountForUser;
+      return (
+        <li key={id} className={css.item}>
+          <img src={avatar} alt="user" className={css.item_img} />
+          <p className={css.item_name}>{user}</p>
+          <span className={css.item_tweets}>{tweets} TWEETS </span>
+          <span className={css.item_followers}>
+            {followerss.toLocaleString("en-US")} FOLLOWERS
+          </span>
+          <button
+            className={`${css.btn_item} ${
+              isFollowing ? css.btn_following : ""
+            }`}
+            onClick={() => followCount(id)}
+          >
+            {isFollowing ? "FOLLOWING" : "FOLLOW"}
+          </button>
+        </li>
+      );
+    });
 
   const pageCount = Math.ceil(arrContacts.length / contactsPerPage);
 
