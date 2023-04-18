@@ -1,0 +1,51 @@
+.active {
+  color: red;
+}
+.title {
+  background-color: aqua;
+  padding: 40px;
+  margin: 0;
+}
+.page {
+  background-color: yellow;
+  padding: 30px;
+  margin-top: 0;
+}
+.navLink {
+  font-weight: bold;
+  color: blue;
+  text-decoration: none;
+  margin: 0;
+}
+.navLink {
+  display: inline-block;
+  box-sizing: border-box;
+  padding: 0 20px;
+  margin: 0 15px 15px 0;
+  outline: none;
+  border: none;
+  border-radius: 4px;
+  height: 32px;
+  line-height: 32px;
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  color: #fff;
+  background-color: #3775dd;
+  box-shadow: 0 2px #21487f;
+  cursor: pointer;
+  user-select: none;
+  appearance: none;
+  touch-action: manipulation;
+  vertical-align: top;
+}
+.navLink:hover {
+  background-color: #002fed;
+}
+.navLink:active {
+  background-color: #2f599e !important;
+}
+.text {
+  justify-content: flex-end;
+  display: flex;
+}

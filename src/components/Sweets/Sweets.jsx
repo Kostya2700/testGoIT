@@ -1,15 +1,19 @@
 import { useDispatch, useSelector } from "react-redux";
-import { getStateUser } from "../../redux/selectors";
+import { getStateUser, getIsLoading } from "../../redux/selectors";
 import { fetchUser } from "../../redux/operation";
 import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import css from "./Sweets.module.css";
 import ReactPaginate from "react-paginate";
+import { GridLoader } from "react-spinners";
 
 const Tweets = () => {
   const arrContacts = useSelector(getStateUser);
+  const usersSpinner = useSelector(getIsLoading);
   const dispatch = useDispatch();
-  const [followCounts, setFollowCounts] = useState({});
+  const [followCounts, setFollowCounts] = useState(
+    JSON.parse(localStorage.getItem("followCounts")) || {}
+  );
   const [pageNumber, setPageNumber] = useState(0);
 
   useEffect(() => {
@@ -27,6 +31,7 @@ const Tweets = () => {
       ? followCountForUser - 1
       : followCountForUser + 1;
     setFollowCounts(newFollowCounts);
+    localStorage.setItem("followCounts", JSON.stringify(newFollowCounts));
   };
 
   const displayContacts = arrContacts
@@ -64,7 +69,12 @@ const Tweets = () => {
 
   return (
     <>
-      <NavLink to="/">Back to home</NavLink>
+      <NavLink to="/" className={css.flip}>
+        Back to home
+      </NavLink>
+      <div className={css.container_spinner}>
+        {usersSpinner && <GridLoader color="#36d7b7" />}
+      </div>
       <ul className={css.list}>{displayContacts}</ul>
       <ReactPaginate
         previousLabel={"Previous"}
