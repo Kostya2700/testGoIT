@@ -210,3 +210,28 @@
     opacity: 0;
   }
 }
+.filters {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.filters_select {
+  margin-left: 10px;
+  padding: 5px;
+  font-size: 16px;
+  border-radius: 5px;
+  background-color: #fff;
+  color: #333;
+  border: 1px solid #ccc;
+  outline: none;
+  cursor: pointer;
+}
+
+.filters_select:hover {
+  border-color: #666;
+}
+
+.filters_select:focus {
+  border-color: #333;
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
+}

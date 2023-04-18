@@ -6,6 +6,7 @@ import { NavLink } from "react-router-dom";
 import css from "./Sweets.module.css";
 import ReactPaginate from "react-paginate";
 import { GridLoader } from "react-spinners";
+import { FILTER_OPTIONS } from "../../utilites/filter";
 
 const Tweets = () => {
   const arrContacts = useSelector(getStateUser);
@@ -15,6 +16,7 @@ const Tweets = () => {
     JSON.parse(localStorage.getItem("followCounts")) || {}
   );
   const [pageNumber, setPageNumber] = useState(0);
+  const [filter, setFilter] = useState("all");
 
   useEffect(() => {
     dispatch(fetchUser());
@@ -33,8 +35,22 @@ const Tweets = () => {
     setFollowCounts(newFollowCounts);
     localStorage.setItem("followCounts", JSON.stringify(newFollowCounts));
   };
-
-  const displayContacts = arrContacts
+  const filteredContacts = arrContacts.filter(({ id }) => {
+    const followCountForUser = followCounts[id] || 0;
+    switch (filter) {
+      case "follow":
+        return followCountForUser % 2 === 0;
+      case "following":
+        return followCountForUser % 2 === 1;
+      default:
+        return true;
+    }
+  });
+  const handleFilterChange = (event) => {
+    setFilter(event.target.value);
+    setPageNumber(0);
+  };
+  const displayContacts = filteredContacts
     .slice(pagesVisited, pagesVisited + contactsPerPage)
     .map(({ id, avatar, tweets, followers, user }) => {
       const followCountForUser = followCounts[id] || 0;
@@ -72,22 +88,39 @@ const Tweets = () => {
       <NavLink to="/" className={css.flip}>
         Back to home
       </NavLink>
+      <div className={css.filters}>
+        <label htmlFor="filter"></label>
+        <select
+          className={css.filters_select}
+          id="filter"
+          value={filter}
+          onChange={handleFilterChange}
+        >
+          {FILTER_OPTIONS.map(({ label, value }) => (
+            <option key={value} value={value}>
+              {label}
+            </option>
+          ))}
+        </select>
+      </div>
       <div className={css.container_spinner}>
         {usersSpinner && <GridLoader color="#36d7b7" />}
       </div>
       <ul className={css.list}>{displayContacts}</ul>
-      <ReactPaginate
-        previousLabel={"Previous"}
-        nextLabel={"Next"}
-        pageCount={pageCount}
-        onPageChange={changePage}
-        containerClassName={css.pagination}
-        previousLinkClassName={css.pagination__link}
-        nextLinkClassName={css.pagination__link}
-        disabledClassName={css.pagination__link__disabled}
-        activeClassName={css.pagination__link__active}
-        pageClassName={css.pagination__page}
-      />
+      {
+        <ReactPaginate
+          previousLabel={"Previous"}
+          nextLabel={"Next"}
+          pageCount={pageCount}
+          onPageChange={changePage}
+          containerClassName={css.pagination}
+          previousLinkClassName={css.pagination__link}
+          nextLinkClassName={css.pagination__link}
+          disabledClassName={css.pagination__link__disabled}
+          activeClassName={css.pagination__link__active}
+          pageClassName={css.pagination__page}
+        />
+      }
     </>
   );
 };
